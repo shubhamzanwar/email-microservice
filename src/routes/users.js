@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var api = require('../middleware/api-framework');
+const express = require('express');
+
+const router = express.Router();
+
 /* GET users listing. */
-router.get('/', async function(req, res, next) {
+router.get('/', async (req, res) => {
   res.send('respond with a resource');
 });
 

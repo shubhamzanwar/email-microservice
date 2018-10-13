@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node_modules/.bin/cross-env NODE_ENV=development nodemon --require ./setup-env.js ./bin/www",
     "coverage": "NODE_ENV=test nyc npm run test",
-    "test": "node_modules/.bin/cross-env NODE_ENV=test mocha \"src/**/*.test.js\" --exit"
+    "test": "node_modules/.bin/cross-env NODE_ENV=test mocha \"src/**/*.test.js\" --exit",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -20,6 +22,9 @@
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "dotenv": "^6.1.0",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.4",
     "nyc": "^13.0.1",
