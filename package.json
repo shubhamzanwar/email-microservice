@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node_modules/.bin/cross-env NODE_ENV=development nodemon --require ./setup-env.js ./bin/www"
+    "start": "node_modules/.bin/cross-env NODE_ENV=development nodemon --require ./setup-env.js ./bin/www",
+    "coverage": "NODE_ENV=test nyc npm run test",
+    "test": "node_modules/.bin/cross-env NODE_ENV=test mocha \"src/**/*.test.js\" --exit"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -15,9 +17,12 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "dotenv": "^6.1.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.4",
+    "nyc": "^13.0.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }
