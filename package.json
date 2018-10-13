@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node_modules/.bin/cross-env NODE_ENV=development nodemon --require ./setup-env.js ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -13,5 +13,12 @@
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "dotenv": "^6.1.0",
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   }
 }
