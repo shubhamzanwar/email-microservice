@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "start:prod": "node ./bin/www",
     "start": "node_modules/.bin/cross-env NODE_ENV=development nodemon --require ./setup-env.js ./bin/www",
     "coverage": "NODE_ENV=test nyc npm run test",
     "test": "node_modules/.bin/cross-env NODE_ENV=test mocha \"src/**/*.test.js\" --exit",

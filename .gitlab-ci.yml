@@ -1,0 +1,50 @@
+image: node:8.9
+
+stages:
+- fetch_lint_test_sonar
+- build
+
+variables:
+  DOCKER_HOST: tcp://52.66.126.137:2375
+  DOCKER_DRIVER: overlay
+  DOCKER_API_VERSION: "1.25"
+  SONAR_SCANNER_VERSION: "3.0.3.778"
+  SONAR_URL: "http://52.66.126.137:9000"
+
+########### Trigger Deployment
+
+fetch node modules lint and test:
+  stage: fetch_lint_test_sonar
+  allow_failure: false
+  image: node:8.9
+  script:
+    - sh ./ci-scripts/fetch-lint-test.sh
+  cache:
+    key: ${CI_PROJECT_PATH}-${CI_COMMIT_REF_NAME}
+    paths:
+      - node_modules/
+
+sonarqube:
+  stage: fetch_lint_test_sonar
+  allow_failure: false
+  dependencies: []
+  image: openjdk:8-jdk-alpine
+  script:
+    - sh ./ci-scripts/sonarkube-utils.sh
+    - /sonar-scanner-${SONAR_SCANNER_VERSION}/bin/sonar-scanner -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.login=$SONAR_USERNAME -Dsonar.password=$SONAR_PASSWORD -Dsonar.branch=$CI_COMMIT_REF_NAME -X
+
+deploy PRs to dev:
+  stage: build
+  image: docker:18.03
+  allow_failure: false
+  script:
+    - docker version
+    - echo "performing login to container registry ${CONTAINER_REGISTRY_HOST}"
+    - docker login ${CONTAINER_REGISTRY_HOST} -u ${REGISTRY_USERNAME} -p ${REGISTRY_PWD}
+    - docker build -t ${CONTAINER_REGISTRY_HOST}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME} .
+    - docker push ${CONTAINER_REGISTRY_HOST}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME}
+  cache:
+    key: ${CI_PROJECT_PATH}-${CI_COMMIT_REF_NAME}
+    paths:
+      - node_modules/
+    policy: pull
