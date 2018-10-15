@@ -8,8 +8,6 @@ async function api (apiOptions) {
   try {
     return await request(apiOptions)
   } catch (err) {
-    console.log('Calling Api - Config', JSON.stringify(apiOptions))
-    console.error('Error in API request', err)
     throw err
   }
 }
