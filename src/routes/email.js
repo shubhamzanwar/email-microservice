@@ -11,23 +11,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmails = (toAdress, subject, message) => {
-  transporter.sendMail({
-    to: toAdress,
-    subject,
-    text: message
-  }, (err, info) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
-    }
-  });
-}
+const sendEmails = (toAdress, subject, message) => transporter.sendMail({
+  to: toAdress,
+  subject,
+  text: message
+})
 
 router.post('/', async (req, res) => {
   const { toAdress, subject, message } = req.body;
-  sendEmails(toAdress, subject, message);
+  await sendEmails(toAdress, subject, message);
   res.send('Email sent');
 });
 
