@@ -1,14 +1,15 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const Joi = require('joi');
+const config = require('../config/index');
 
 const router = express.Router();
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'learn.mdl.microservices@gmail.com',
-    pass: '768chinaStreet',
+    user: config.email.username,
+    pass: config.email.password,
   },
 });
 
