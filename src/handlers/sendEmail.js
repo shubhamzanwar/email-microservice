@@ -14,21 +14,23 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports = {
+  transporter,
   emailHandler: async (req, res) => {
     const validation = Joi.validate(req.body, JOISchema, { abortEarly: false });
     if (!validation.error) {
       const { toAdress, subject, message } = req.body;
-      transporter.sendMail({
-        to: toAdress,
-        subject,
-        text: message
-      }).then(() => {
+      try {
+        await transporter.sendMail({
+          to: toAdress,
+          subject,
+          text: message
+        })
         res.send('Email seccuessfully sent')
-      }).catch((e) => {
-        errorHandler(e);
+      } catch (err) {
+        errorHandler(err);
         res.status(500);
         res.send('Email failed to send');
-      });
+      }
     } else {
       res.status(400);
       res.send(validation.error.message);
